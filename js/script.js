@@ -25,10 +25,12 @@ $(".nav_link, .arrow_link, .gradient-button, .block_list_vert").mPageScroll2id({
 });
 
 let xhr = new XMLHttpRequest(),
-    contactForm = document.getElementById('contactForm')
+    contactForm = document.getElementById('contactForm'),
+    sendMail = document.getElementById('sendMail'),
+    sendMailAgain = document.getElementById('sendMailAgain')
 
-if (document.getElementById('sendMail')) {
-    document.getElementById('sendMail').addEventListener('click', (e) => {
+if (sendMail) {
+    sendMail.addEventListener('click', (e) => {
         e.preventDefault()
         e.stopPropagation()
 
@@ -37,7 +39,35 @@ if (document.getElementById('sendMail')) {
         xhr.send(new FormData(contactForm))
         
         xhr.onload = () => {
-            console.log(xhr.response)
+            let res = JSON.parse(xhr.response)
+
+            if (res.result != undefined && res.result == true) {
+                sendMail.classList.remove('gradient-button-send')
+                sendMail.classList.add('button-send', 'active')
+
+                let currentText = sendMail.innerText
+
+                sendMail.innerText = sendMail.dataset.toggleText
+                sendMail.dataset.toggleText = currentText
+                sendMailAgain.classList.add('active')
+            }
+            else {
+                alert('Some form error!')
+            }
         }
+    })
+}
+if (sendMailAgain) {
+    sendMailAgain.addEventListener('click', (e) => {
+        e.preventDefault()
+        e.stopPropagation()
+        sendMail.classList.remove('button-send', 'active')
+        sendMail.classList.add('gradient-button-send')
+
+        let currentText = sendMail.innerText
+
+        sendMail.innerText = sendMail.dataset.toggleText
+        sendMail.dataset.toggleText = currentText
+        sendMailAgain.classList.remove('active')
     })
 }

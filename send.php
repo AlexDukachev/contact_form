@@ -17,26 +17,27 @@ if (isset($_POST['your-message'])) $message = $_POST['your-message'];
 
 $mail = new PHPMailer;
 $mail->CharSet = 'UTF-8';
+
 // Настройки SMTP
-$mail->isSMTP();
-$mail->SMTPAuth = true;
-$mail->SMTPDebug = 1;
+// $mail->isSMTP();
+// $mail->SMTPAuth = true;
+// $mail->SMTPDebug = 1;
  
-$mail->Host = 'ssl://smtp.gmail.com';
-$mail->Port = 465;
-$mail->Username = 'alexvultr@gmail.com';
-$mail->Password = '378Qw642@';
+// $mail->Host = 'ssl://smtp.gmail.com';
+// $mail->Port = 465;
+// $mail->Username = 'example@gmail.com';
+// $mail->Password = 'password';
 
 // От кого
 $mail->setFrom('info@localhost', 'localhost');		
  
 // Кому
-$mail->addAddress('alex.dukachev@gmail.com', 'Иван Петров');
+$mail->addAddress('to-email@gmail.com', 'Иван Петров');
  
 // Тема письма
 $mail->Subject = 'Обратная связь с сайта';
  
 // Тело письма
 $mail->msgHTML($message);
- 
-$mail->send();
+
+die(json_encode(['result' => $mail->send()]));
